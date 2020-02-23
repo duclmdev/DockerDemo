@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.*;
 import java.net.*;
 
+@Slf4j
 public class TCPServer {
     //static ServerSocket variable
     private static ServerSocket server;
@@ -16,14 +17,14 @@ public class TCPServer {
         server = new ServerSocket(port);
         //keep listens indefinitely until receives 'exit' call or program terminates
         while(true){
-            System.out.println("Waiting for the client request");
+            log.debug("Waiting for the client request");
             //creating socket and waiting for client connection
             Socket socket = server.accept();
             //read from socket to ObjectInputStream object
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             //convert ObjectInputStream object to String
             String message = (String) ois.readObject();
-            System.out.println("Message Received: " + message);
+            log.info("Message Received: " + message);
             //create ObjectOutputStream object
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             //write object to Socket
