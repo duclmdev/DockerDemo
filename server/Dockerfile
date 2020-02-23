@@ -1,24 +1,23 @@
 # Pull base image.
-FROM dockerfile/ubuntu
+FROM gradle
 
 LABEL maintainer="duclm22@viettel.com.vn"
 
-# Install Java.
-RUN \
-  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
-  add-apt-repository -y ppa:webupd8team/java && \
-  apt-get update && \
-  apt-get install -y oracle-java8-installer && \
-  rm -rf /var/lib/apt/lists/* && \
-  rm -rf /var/cache/oracle-jdk8-installer
-
-# Define working directory.
-WORKDIR /data
 
 # Define commonly used JAVA_HOME variable
-ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+# ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+# WORKDIR /home/gradle
 
-RUN gradle build
+COPY . /home/gradle
 
-CMD ["java", "-jar", "./target/build.jar"]
+RUN pwd
+RUN ls -l
+
+RUN gradle build --refresh-dependencies
+
+RUN ls -l build/libs
+
+EXPOSE 6789
+
+CMD ["java", "-jar", "./build/libs/gradle.jar"]
 
