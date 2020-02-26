@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.*;
 import java.net.*;
 
-@Slf4j
 public class TCPServer {
     //static ServerSocket variable
     private static ServerSocket server;
@@ -17,24 +16,27 @@ public class TCPServer {
         server = new ServerSocket(port);
         //keep listens indefinitely until receives 'exit' call or program terminates
         while(true){
-            log.debug("Waiting for the client request");
+            System.out.println("Waiting for the client request");
             //creating socket and waiting for client connection
             Socket socket = server.accept();
             //read from socket to ObjectInputStream object
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             //convert ObjectInputStream object to String
             String message = (String) ois.readObject();
-            log.info("Message Received: " + message);
+            System.out.println("Message Received: " + message);
             //create ObjectOutputStream object
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             //write object to Socket
-            oos.writeObject("Hi Client "+message);
+            oos.writeObject("Hi Client " + message);
             //close resources
             ois.close();
             oos.close();
             socket.close();
             //terminate the server if client sends exit request
-            if(message.equalsIgnoreCase("exit")) break;
+            if (message.equalsIgnoreCase("exit0")){
+                System.out.println("User sent exit request");
+                break;
+            }
         }
         System.out.println("Shutting down Socket server!!");
         //close the ServerSocket object

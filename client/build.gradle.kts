@@ -28,7 +28,4 @@ val jar by tasks.getting(Jar::class) {
     manifest {
         attributes["Main-Class"] = "com.viettel.demo.TCPClient"
     }
-
-    from(configurations.runtime.map({ if (it.isDirectory) it else zipTree(it) }))
-    with(tasks["jar"] as CopySpec)
 }
